@@ -1,7 +1,16 @@
 <template>
-  <Tutorial/>
+  <div>
+    <h1>vue-chartjsで棒グラフ</h1>
+    <BarChart />
+  </div>
 </template>
 
 <script>
-export default {}
+import BarChart from '../components/BarChart.vue'
+
+export default {
+  components: {
+    BarChart
+  }
+}
 </script>
