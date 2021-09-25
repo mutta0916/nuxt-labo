@@ -31,5 +31,11 @@ npm install --save @nuxtjs/axios
 
 3. 呼出処理を記述
 
-### 参照URL
+#### 参照URL
 [Nuxt.jsでaxiosの使い方と設定方法を紹介](https://ma-vericks.com/nuxt-axios/)
+
+### aタグとNuxtLinkの違い
+aタグは外部ページ、NuxtLinkは内部ページで使う。
+
+- NuxtLinkを使う利点  
+公式によるとパフォーマンスが高まるらしい。

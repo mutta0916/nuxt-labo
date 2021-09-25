@@ -4,13 +4,15 @@
       <div class="todo">
         <input type="text" class="input" placeholder="ここにやることを入力しよう！" v-model="input">
         <input type="button" @click="addData" value="追加！">
-        <table>
+        <tr v-for="(row, index) in data" :key="index">
+          <td>{{row}}</td>
+        </tr>
+        <!-- <table>
           <tr v-for="(row, index) in data" :key="index">
             <td>{{row}}</td>
-            <input v-if="data.length > 0" type="button" @click="modData" value="変更！">
-            <input v-if="data.length > 0" type="button" @click="delData" value="削除！">
+            <input v-if="data.length > 0" type="button" @click="delData(index)" value="削除！">
           </tr>
-        </table>
+        </table> -->
       </div>
     </div>
   </div>
@@ -25,20 +27,25 @@ export default {
       data: []
     }
   },
+  async fetchSomething() {
+      this.data = JSON.stringify(await this.$axios.$get('http://127.0.0.1:8000/api/todo'));
+  },
   methods: {
-    async fetchSomething() {
-      this.data = JSON.stringify(await this.$axios.$get('http://127.0.0.1:8000/api/test'));
+    fetchSomething() {
+      this.$axios.$get('http://127.0.0.1:8000/api/test')
+      .then(response => {
+        this.data = JSON.stringify(response)
+      })
     },
+    // async fetchSomething() {
+    //   this.data = JSON.stringify(await this.$axios.$get('http://127.0.0.1:8000/api/test'));
+    // },
     addData: function() {
       this.data.push(this.input);
       this.input = '';
     },
-    modData: function() {
-      this.data.push(this.input);
-      this.input = '';
-    },
-    delData: function() {
-      this.data.splice(this.data.indeOf());
+    delData: function(index) {
+      this.data.splice(index,1);
       this.input = '';
     }
   }
