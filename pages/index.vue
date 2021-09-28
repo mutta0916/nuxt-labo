@@ -1,6 +1,5 @@
 <template>
   <div>
-    <NuxtLink to="/todo">TODOリスト</NuxtLink>
     <h1>vue-chartjsで棒グラフ</h1>
     <BarChart />
   </div>

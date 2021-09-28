@@ -4,15 +4,12 @@
       <div class="todo">
         <input type="text" class="input" placeholder="ここにやることを入力しよう！" v-model="input">
         <input type="button" @click="addData" value="追加！">
-        <tr v-for="(row, index) in data" :key="index">
-          <td>{{row}}</td>
-        </tr>
-        <!-- <table>
+        <table>
           <tr v-for="(row, index) in data" :key="index">
             <td>{{row}}</td>
             <input v-if="data.length > 0" type="button" @click="delData(index)" value="削除！">
           </tr>
-        </table> -->
+        </table>
       </div>
     </div>
   </div>
@@ -27,21 +24,29 @@ export default {
       data: []
     }
   },
-  async fetchSomething() {
-      this.data = JSON.stringify(await this.$axios.$get('http://127.0.0.1:8000/api/todo'));
+  async asyncData({ $axios }) {
+    const data = await $axios.$get('http://127.0.0.1:8000/api/todo')
+    return { data }
   },
   methods: {
-    fetchSomething() {
-      this.$axios.$get('http://127.0.0.1:8000/api/test')
-      .then(response => {
-        this.data = JSON.stringify(response)
-      })
-    },
-    // async fetchSomething() {
-    //   this.data = JSON.stringify(await this.$axios.$get('http://127.0.0.1:8000/api/test'));
+    //こういう書き方もできる。
+    // fetchSomething() {
+    //   this.$axios.$get('http://127.0.0.1:8000/api/test')
+    //   .then(response => {
+    //     this.data = JSON.stringify(response)
+    //   })
     // },
     addData: function() {
-      this.data.push(this.input);
+      // this.data.push(this.input);
+      this.$axios.$post('http://127.0.0.1:8000/api/todo', {todo: 'テスト'})
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+      // this.$data = this.$axios.$get('http://127.0.0.1:8000/api/todo');
       this.input = '';
     },
     delData: function(index) {
