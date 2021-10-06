@@ -2,11 +2,13 @@
   <div id="app">
     <div class="content">
       <div class="todo">
-        <input type="text" class="input" placeholder="ここにやることを入力しよう！" v-model="input">
-        <input type="button" @click="addData" value="追加！">
+        <form action="/todo">
+          <input type="text" class="input" placeholder="ここにやることを入力しよう！" v-model="input">
+          <input type="button" @click="addData" value="追加！">
+        </form>
         <table>
           <tr v-for="(row, index) in data" :key="index">
-            <td>{{row}}</td>
+            <td>{{row.memo}}</td>
             <input v-if="data.length > 0" type="button" @click="delData(index)" value="削除！">
           </tr>
         </table>
@@ -37,8 +39,7 @@ export default {
     //   })
     // },
     addData: function() {
-      // this.data.push(this.input);
-      this.$axios.$post('http://127.0.0.1:8000/api/todo', {todo: 'テスト'})
+      this.$axios.$post('http://127.0.0.1:8000/api/todo', {id:4, memo:this.input})
       .then(function (response) {
         console.log(response);
       })
@@ -46,6 +47,14 @@ export default {
         console.log(error);
       });
 
+      this.data = this.$axios.$get('http://127.0.0.1:8000/api/todo')
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  
       // this.$data = this.$axios.$get('http://127.0.0.1:8000/api/todo');
       this.input = '';
     },
