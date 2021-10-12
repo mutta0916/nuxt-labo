@@ -8,8 +8,8 @@
         </form>
         <table>
           <tr v-for="(row, index) in data" :key="index">
-            <td>{{row.memo}}</td>
-            <input v-if="data.length > 0" type="button" @click="delData(index)" value="削除！">
+            <td>{{row.todo}}</td>
+            <input v-if="data.length > 0" type="button" @click="delData(row.id)" value="削除！">
           </tr>
         </table>
       </div>
@@ -26,42 +26,49 @@ export default {
       data: []
     }
   },
-  async asyncData({ $axios }) {
-    const data = await $axios.$get('http://127.0.0.1:8000/api/todo')
-    return { data }
+  async fetch() {
+    await this.$axios.$get('http://127.0.0.1:8000/api/todo')
+    .then(response => {
+        this.data = response.data;
+      })
+      .catch(error => {
+        console.log(error);
+      });
   },
   methods: {
-    //こういう書き方もできる。
-    // fetchSomething() {
-    //   this.$axios.$get('http://127.0.0.1:8000/api/test')
-    //   .then(response => {
-    //     this.data = JSON.stringify(response)
-    //   })
-    // },
     addData: function() {
-      this.$axios.$post('http://127.0.0.1:8000/api/todo', {id:4, memo:this.input})
-      .then(function (response) {
-        console.log(response);
+      //下のロジックをアロー関数で書き直したい
+      // this.$axios.$post('http://127.0.0.1:8000/api/todo', {todo:this.input})
+      // .then(function (response) {
+      //   console.log('登録処理です。');
+      //   console.log(response);
+      //   console.log(response.data);
+      //   this.data = response.data;
+      //   // this.data.splice(0,this.data.length,response.data);
+      // })
+      // .catch(function (error) {
+      //   console.log(error);
+      // });
+
+      this.$axios.$post('http://127.0.0.1:8000/api/todo', {todo:this.input})
+      .then(response => {
+        this.data = response.data;
       })
-      .catch(function (error) {
+      .catch(error => {
         console.log(error);
       });
 
-      this.data = this.$axios.$get('http://127.0.0.1:8000/api/todo')
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  
-      // this.$data = this.$axios.$get('http://127.0.0.1:8000/api/todo');
       this.input = '';
     },
-    delData: function(index) {
-      this.data.splice(index,1);
-      this.input = '';
-    }
+    delData: function(id) {
+      this.$axios.$delete('http://127.0.0.1:8000/api/todo/' + id)
+      .then(response => {
+        this.data = response.data;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    },
   }
 }
 </script>

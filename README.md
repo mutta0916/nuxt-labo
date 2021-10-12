@@ -43,3 +43,6 @@ aタグは外部ページ、NuxtLinkは内部ページで使う。
 ### asyncDataメソッドについて
 - asyncData内では「this(コンポーネントのインスタンス)」にアクセスできない。
 - pageレベルのコンポーネントにのみ使用可能。
+
+### 非同期通信で困ったこと
+[javascript this使用時にエラー「Uncaught TypeError: Cannot set property ‘xxx’ of undefined」が発生した場合](https://mebee.info/2021/03/24/post-26109/)
