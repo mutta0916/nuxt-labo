@@ -3,13 +3,18 @@
     <div class="content">
       <div class="todo">
         <form action="/todo">
-          <input type="text" class="input" placeholder="ここにやることを入力しよう！" v-model="input">
-          <input type="button" @click="addData" value="追加！">
+          <input
+            type="text"
+            class="input"
+            placeholder="ここにやることを入力しよう！"
+            v-model="input"
+          />
+          <input type="button" @click="addData" value="追加！" />
         </form>
         <table>
           <tr v-for="(row, index) in data" :key="index">
-            <td>{{row.todo}}</td>
-            <input v-if="data.length > 0" type="button" @click="delData(row.id)" value="削除！">
+            <td>{{ row.todo }}</td>
+            <input v-if="data.length > 0" type="button" @click="delData(row.id)" value="削除！" />
           </tr>
         </table>
       </div>
@@ -18,25 +23,25 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
-      input:'',
-      data: []
-    }
+      input: '',
+      data: [],
+    };
   },
   async fetch() {
-    await this.$axios.$get('http://127.0.0.1:8000/api/todo')
-    .then(response => {
+    await this.$axios
+      .$get('http://127.0.0.1:8000/api/todo')
+      .then((response) => {
         this.data = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
   methods: {
-    addData: function() {
+    addData: function () {
       //下のロジックをアロー関数で書き直したい
       // this.$axios.$post('http://127.0.0.1:8000/api/todo', {todo:this.input})
       // .then(function (response) {
@@ -50,32 +55,34 @@ export default {
       //   console.log(error);
       // });
 
-      this.$axios.$post('http://127.0.0.1:8000/api/todo', {todo:this.input})
-      .then(response => {
-        this.data = response.data;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      this.$axios
+        .$post('http://127.0.0.1:8000/api/todo', { todo: this.input })
+        .then((response) => {
+          this.data = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
       this.input = '';
     },
-    delData: function(id) {
-      this.$axios.$delete('http://127.0.0.1:8000/api/todo/' + id)
-      .then(response => {
-        this.data = response.data;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    delData: function (id) {
+      this.$axios
+        .$delete('http://127.0.0.1:8000/api/todo/' + id)
+        .then((response) => {
+          this.data = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
-  }
-}
+  },
+};
 </script>
 
 <style>
 .content {
-  background-color:#E79460;
+  background-color: #e79460;
   margin: 0 auto;
   margin-top: 50px;
 }
@@ -87,10 +94,10 @@ export default {
 }
 /* .content {
     padding: 20px; */
-    /* text-align: center; */
-    /* background-color: azure; */
-    /* margin: 30px 300px; */
-    /* margin: 0 auto;
+/* text-align: center; */
+/* background-color: azure; */
+/* margin: 30px 300px; */
+/* margin: 0 auto;
 }
 .memo {
     width: 500px;
